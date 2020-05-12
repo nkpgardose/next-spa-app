@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAppReducer } from "../../components/provider";
 import { onFieldChange } from "../";
@@ -8,8 +8,12 @@ import { onFieldChange } from "../";
 export default function Second() {
   const router = useRouter();
   const [state, dispatch] = useAppReducer();
-  const { fruit: initialfruit } = state;
+  const { pet: initialPet, fruit: initialfruit } = state;
   const [fruitVal, setFruit] = useState(initialfruit);
+
+  useEffect(() => {
+    if (!initialPet) router.push("/steps/first");
+  }, []);
 
   function onSubmit(e) {
     e.preventDefault();
