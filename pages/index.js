@@ -1,209 +1,92 @@
-import Head from 'next/head'
+import Head from "next/head";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { useAppReducer } from "../components/provider";
 
+export const onFieldChange = (callback) => (e) => callback(e.target.value);
+
+/**
+ * get started and entry point: `yarn create next-app [project-name]`
+ * onSubmit implementation here: https://nextjs.org/docs/api-reference/next/router
+ * the _app.js here: https://nextjs.org/learn/basics/assets-metadata-css/layout-component
+ */
 export default function Home() {
+  const router = useRouter();
+  const [state, dispatch] = useAppReducer();
+  const { name: initialName, company: initialCompany } = state;
+  const [nameVal, setName] = useState(initialName);
+  const [companyVal, setCompany] = useState(initialCompany);
+
+  function onSubmit(e) {
+    e.preventDefault();
+
+    const payload = {
+      name: nameVal,
+      company: companyVal,
+    };
+
+    dispatch({ type: "merge", payload });
+    router.push("/steps/first");
+  }
+
   return (
     <div className="container">
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main>
-        <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className="description">
-          Get started by editing <code>pages/index.js</code>
-        </p>
-
-        <div className="grid">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
+      <h1>Next.js SPA Stepper Application</h1>
+      <p>It contains the following</p>
+      <ul>
+        <li>
+          Uses Next.js for navigation{" "}
+          <em>
+            (
+            <a href="https://nextjs.org/learn/basics/data-fetching/two-forms">
+              Static Generation
+            </a>
+            )
+          </em>
+        </li>
+        <li>
+          Next.js Redirects using{" "}
+          <a href="https://nextjs.org/docs/api-reference/next/router">
+            Routing
           </a>
-
-          <a href="https://nextjs.org/learn" className="card">
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
+        </li>
+        <li>Data Management &amp; Middleware using React Hook `useReducer`</li>
+        <li>
+          Make the most out of{" "}
+          <a href="https://developer.mozilla.org/en-US/docs/Web/API/Storage">
+            Web Storage
           </a>
-
-          <a
-            href="https://github.com/zeit/next.js/tree/master/examples"
-            className="card"
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="card"
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        </li>
+      </ul>
+      <form onSubmit={onSubmit}>
+        <div>
+          <label htmlFor="name">Name</label>
+          <input
+            id="name"
+            type="text"
+            name="name"
+            value={nameVal}
+            required
+            onChange={onFieldChange(setName)}
+          />
         </div>
-      </main>
-
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="logo" />
-        </a>
-      </footer>
-
-      <style jsx>{`
-        .container {
-          min-height: 100vh;
-          padding: 0 0.5rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer img {
-          margin-left: 0.5rem;
-        }
-
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .title a {
-          color: #0070f3;
-          text-decoration: none;
-        }
-
-        .title a:hover,
-        .title a:focus,
-        .title a:active {
-          text-decoration: underline;
-        }
-
-        .title {
-          margin: 0;
-          line-height: 1.15;
-          font-size: 4rem;
-        }
-
-        .title,
-        .description {
-          text-align: center;
-        }
-
-        .description {
-          line-height: 1.5;
-          font-size: 1.5rem;
-        }
-
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-        }
-
-        .grid {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-
-          max-width: 800px;
-          margin-top: 3rem;
-        }
-
-        .card {
-          margin: 1rem;
-          flex-basis: 45%;
-          padding: 1.5rem;
-          text-align: left;
-          color: inherit;
-          text-decoration: none;
-          border: 1px solid #eaeaea;
-          border-radius: 10px;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-
-        .card:hover,
-        .card:focus,
-        .card:active {
-          color: #0070f3;
-          border-color: #0070f3;
-        }
-
-        .card h3 {
-          margin: 0 0 1rem 0;
-          font-size: 1.5rem;
-        }
-
-        .card p {
-          margin: 0;
-          font-size: 1.25rem;
-          line-height: 1.5;
-        }
-
-        .logo {
-          height: 1em;
-        }
-
-        @media (max-width: 600px) {
-          .grid {
-            width: 100%;
-            flex-direction: column;
-          }
-        }
-      `}</style>
-
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
-
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
+        <div>
+          <label htmlFor="company">Company</label>
+          <input
+            id="company"
+            type="text"
+            name="company"
+            value={companyVal}
+            required
+            onChange={onFieldChange(setCompany)}
+          />
+        </div>
+        <input type="submit" value="next" />
+      </form>
     </div>
-  )
+  );
 }
