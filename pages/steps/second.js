@@ -12,7 +12,7 @@ export default function Second() {
   const [fruitVal, setFruit] = useState(initialfruit);
 
   useEffect(() => {
-    if (!initialPet) router.push("/steps/first");
+    if (!initialPet) router.replace("/steps/first");
   }, []);
 
   function onSubmit(e) {

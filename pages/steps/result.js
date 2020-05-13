@@ -10,7 +10,7 @@ export default function Second() {
 
   useEffect(() => {
     const { fruit } = state;
-    if (!fruit) router.push("/steps/second");
+    if (!fruit) router.replace("/steps/second");
   }, []);
 
   function onSubmit(e) {

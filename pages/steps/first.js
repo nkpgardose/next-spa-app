@@ -12,7 +12,7 @@ export default function First() {
   const [petVal, setPet] = useState(initialPet);
 
   useEffect(() => {
-    if (!initialName) router.push("/");
+    if (!initialName) router.replace("/");
   }, []);
 
   function onSubmit(e) {
