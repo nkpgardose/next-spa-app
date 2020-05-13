@@ -1,11 +1,17 @@
 import Link from "next/link";
 import Head from "next/head";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAppReducer } from "../../components/provider";
 
 export default function Second() {
   const router = useRouter();
   const [state, dispatch] = useAppReducer();
+
+  useEffect(() => {
+    const { fruit } = state;
+    if (!fruit) router.replace("/steps/second");
+  }, []);
 
   function onSubmit(e) {
     e.preventDefault();

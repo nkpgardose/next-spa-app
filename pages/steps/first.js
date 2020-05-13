@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAppReducer } from "../../components/provider";
 import { onFieldChange } from "../";
@@ -8,8 +8,12 @@ import { onFieldChange } from "../";
 export default function First() {
   const router = useRouter();
   const [state, dispatch] = useAppReducer();
-  const { pet: initialPet } = state;
+  const { name: initialName, pet: initialPet } = state;
   const [petVal, setPet] = useState(initialPet);
+
+  useEffect(() => {
+    if (!initialName) router.replace("/");
+  }, []);
 
   function onSubmit(e) {
     e.preventDefault();
